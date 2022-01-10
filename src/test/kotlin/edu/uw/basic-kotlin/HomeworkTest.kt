@@ -81,11 +81,11 @@ class HomeworkTest {
     // =================
     // Money tests
     @Test fun Money_sanityTests() {
-        val negEx = assertThrows(IllegalArgumentException::class.java) {
+        val negEx = assertFailsWith(IllegalArgumentException::class) {
             Money(-5, "USD")
         }
 
-        val currEx = assertThrows(IllegalArgumentException::class.java) {
+        val currEx = assertFailsWith(IllegalArgumentException::class) {
             Money(10, "YEN")
         }
     }
@@ -118,5 +118,24 @@ class HomeworkTest {
             assertEquals(result.amount, (pair.first + pair.second).amount)
             assertEquals(result.currency, (pair.first + pair.second).currency)
         }
+    }
+
+    // =================
+    // Extra Tests
+    @Test fun when_largeInt() {
+        assertEquals(whenFn(448), "a number")
+    }
+
+    @Test fun mathOp_divide() {
+        assertEquals(5, mathOp(10, 2, { l,r -> l/r} ))
+    }
+
+    @Test fun Money_extraConvertTests() {
+        val sixGBP = Money(6, "GBP")
+
+        assertEquals(fifteenEUR.amount, tenUSD.convert("EUR").amount)
+        assertEquals(fifteenCAN.amount, twelveUSD.convert("CAN").amount)
+        assertEquals(fifteenCAN.amount, sixGBP.convert("CAN").amount)
+        assertEquals(sixGBP.amount, fifteenCAN.convert("GBP").amount)
     }
 }
